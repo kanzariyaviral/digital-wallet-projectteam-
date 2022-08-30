@@ -32,11 +32,15 @@ app.get("/", (req, res) => {
   });
 });
 app.post("/project/create", (req, res) => {
-  const resourceIds = req.body.resourceIds;
+  let resourceIds = req.body.resourceIds;
+  function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+  resourceIds = resourceIds.filter(onlyUnique);
   const projectTeam = new ProjectTeam({
     _id: new mongoose.Types.ObjectId(),
     projectTeamName: req.body.projectTeamName,
-    resourceIds: req.body.resourceIds,
+    resourceIds: resourceIds,
   });
   Resource.find({ _id: resourceIds })
     .then((resource) => {
@@ -62,53 +66,47 @@ app.post("/project/create", (req, res) => {
         message: err,
       });
     });
-
-  // const projectTeam = new ProjectTeam({
-  //   _id: new mongoose.Types.ObjectId(),
-  //   Name: req.body.firstName,
-  //   projectTeamName: req.body.projectTeamName,
-  //   resourceIds: req.body.resourceIds,
-  // });
-  // projectTeam
-  //   .save()
-  //   .then((result) => {
-  //     console.log(result);
-  //     return res.status(200).json({
-  //       success: true,
-  //       message: "projectTeam create successfully",
-  //     });
-  //   })
-  //   .catch((e) => {
-  //     return res.status(400).json({
-  //       success: false,
-  //       message: e,
-  //     });
-  //   });
-  // });
 });
 
-app.put("/project/add/resource",async (req, res) => {
-  const p=await ProjectTeam.findOne({ _id: req.body.projectTeamId })
-      if (p) {
-        const r=Resource.find({ _id: req.body.resourceId })
-        if(r){
-            ProjectTeam.updateOne(req.body.projectTeamId, req.body.resourceId, (err, todo) => {
-              // Handle any possible database errors
-                  if (err) return res.status(500).send(err);
-                  return res.send(todo);
+app.put("/project/add/resource", (req, res) => {
+  ProjectTeam.findOne({ _id: req.body.projectTeamId })
+    .then((p) => {
+      Resource.find({ _id: req.body.resourceId })
+        .then((resource) => {
+          let newBoard = new Resource({
+            _id: req.body.projectTeamId,
+            resourceIds: req.body.resourceId,
+          });
+          ProjectTeam.findOneAndUpdate({_id: req.body.projectTeamId }, 
+            {resourceIds: req.body.resourceId}, function (err, docs) {
+            if (err){
+              return res.json({
+                success: false,
+                message: err,
               });
-            }else{
-            return res.status(400).json({
-              message: `${req.body.resourceId} Id does not exist`,
-            });
             }
-      }
+            else{
+              return res.json({
+                success: true,
+                message: "Project Team Update Sucessfully",
+              });
+            }
+        });
+        })
+        .catch((err) => {
+          return res.json({
+            success: false,
+            message: err,
+          });
+        });
+    })
+    .catch((err) => {
       return res.status(202).json({
         success: false,
         data: {},
         message: "project not found",
       });
-  
+    });
 });
 
 app.get("/project", (req, res) => {
