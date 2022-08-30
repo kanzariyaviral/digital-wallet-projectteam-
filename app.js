@@ -2,7 +2,12 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const { DB, PORT } = require("./config/config");
+const request = require("request");
+const dotenv = require("dotenv");
+dotenv.config();
+const DB = process.env.MONGODB_URL;
+const PORT = process.env.PORT;
+const RESOURCE_URL = process.env.RESOURCE_URL;
 const port = PORT || 5001;
 const Resource = require("./entity/resource.entity");
 const ProjectTeam = require("./entity/project-team.entity");
@@ -77,21 +82,23 @@ app.put("/project/add/resource", (req, res) => {
             _id: req.body.projectTeamId,
             resourceIds: req.body.resourceId,
           });
-          ProjectTeam.findOneAndUpdate({_id: req.body.projectTeamId }, 
-            {resourceIds: req.body.resourceId}, function (err, docs) {
-            if (err){
-              return res.json({
-                success: false,
-                message: err,
-              });
+          ProjectTeam.findOneAndUpdate(
+            { _id: req.body.projectTeamId },
+            { resourceIds: req.body.resourceId },
+            function (err, docs) {
+              if (err) {
+                return res.json({
+                  success: false,
+                  message: err,
+                });
+              } else {
+                return res.json({
+                  success: true,
+                  message: "Project Team Update Sucessfully",
+                });
+              }
             }
-            else{
-              return res.json({
-                success: true,
-                message: "Project Team Update Sucessfully",
-              });
-            }
-        });
+          );
         })
         .catch((err) => {
           return res.json({
@@ -120,6 +127,60 @@ app.get("/project", (req, res) => {
       });
     });
 });
+app.post("/project-create-micro", async (req, res) => {
+  let resourceIds = req.body.resourceIds;
+  function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+  resourceIds = resourceIds.filter(onlyUnique);
+  const projectTeam = new ProjectTeam({
+    _id: new mongoose.Types.ObjectId(),
+    projectTeamName: req.body.projectTeamName,
+    resourceIds: resourceIds,
+  });
+  const getResources = await getResourcesFunc(resourceIds[0]);
+  if (getResources.success === true) {
+    projectTeam
+      .save()
+      .then((result) => {
+        return res.status(200).json({
+          success: true,
+          data: result,
+          message: "projectTeam create successfully",
+        });
+      })
+      .catch((e) => {
+        return res.status(400).json({
+          success: false,
+          message: e,
+        });
+      });
+  } else {
+    return res.status(402).json({
+      success: false,
+      message: "Resource Not Found",
+    });
+  }
+});
+
+const getResourcesFunc = (resourceId) => {
+  return new Promise(function (resolve, reject) {
+    request.get(
+      {
+        headers: { "content-type": "application/json" },
+        url: `${RESOURCE_URL}/by/${resourceId}`,
+      },
+      (err, resourseResponse) => {
+        const _body = JSON.parse(resourseResponse.body);
+        if (!err && _body.success === true) {
+          resolve(_body);
+        } else {
+          resolve(_body);
+        }
+      }
+    );
+  });
+};
 
 app.listen(port, () => {
   console.log(`servere use port no ${port}`);
