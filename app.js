@@ -11,6 +11,7 @@ const RESOURCE_URL = process.env.RESOURCE_URL;
 const port = PORT || 5001;
 const Resource = require("./entity/resource.entity");
 const ProjectTeam = require("./entity/project-team.entity");
+const logger=require("./logger")
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -117,9 +118,24 @@ app.put("/project/add/resource", (req, res) => {
 });
 
 app.get("/project", (req, res) => {
+  const err={
+    status:400,
+    message:"error"
+  }
+//   // Log a message
+// logger.log({
+//   // Message to be logged
+//       message: 'Hello, Winston!',
+  
+//   // Level of the message logging
+//       level: 'info'
+//   });
+//   // Log a message
+  // logger.info('Hello, Winston!');
   ProjectTeam.find()
-    .then((projectTeams) => {
-      return res.status(200).json(projectTeams);
+  .then((projectTeams) => {
+    logger.error(`${err.status || 500} - ${res.statusMessage} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
+    return res.status(200).json(projectTeams);
     })
     .catch((err) => {
       return res.status(500).json({
@@ -151,10 +167,11 @@ app.post("/project/create-micro", async (req, res) => {
           message: "projectTeam create successfully",
         });
       })
-      .catch((e) => {
+      .catch((err) => {
+        logger.error(`${err.status || 500} - ${res.statusMessage} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
         return res.status(400).json({
           success: false,
-          message: e,
+          message: err,
         });
       });
   } else {
@@ -173,7 +190,7 @@ const getResourcesFunc = (resourceId) => {
         url: `${RESOURCE_URL}/by/${resourceId}`,
       },
       (err, resourseResponse) => {
-        const _body = JSON.parse(resourseResponse.body);
+        const _body = JSON.parse(resourseResponse?.body);
         if (!err && _body.success === true) {
           resolve(_body);
         } else {
