@@ -127,7 +127,7 @@ app.get("/project", (req, res) => {
       });
     });
 });
-app.post("/project-create-micro", async (req, res) => {
+app.post("/project/create-micro", async (req, res) => {
   let resourceIds = req.body.resourceIds;
   function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
