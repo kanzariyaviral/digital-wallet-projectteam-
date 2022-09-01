@@ -133,13 +133,15 @@ app.post("/project/create-micro", async (req, res) => {
     return self.indexOf(value) === index;
   }
   resourceIds = resourceIds.filter(onlyUnique);
-  const projectTeam = new ProjectTeam({
-    _id: new mongoose.Types.ObjectId(),
-    projectTeamName: req.body.projectTeamName,
-    resourceIds: resourceIds,
-  });
   const getResources = await getResourcesFunc(resourceIds[0]);
   if (getResources.success === true) {
+    const fullName=`${getResources?.data?.firstName} ${getResources?.data?.lastName}`
+    const projectTeam = new ProjectTeam({
+      _id: new mongoose.Types.ObjectId(),
+      projectTeamName: req.body.projectTeamName,
+      resourceIds: resourceIds,
+      resourceName:fullName
+    });
     projectTeam
       .save()
       .then((result) => {
