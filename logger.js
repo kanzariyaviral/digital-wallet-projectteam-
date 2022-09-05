@@ -1,19 +1,18 @@
-const winston = require('winston');
-const{transports,File}=require('winston')
+const { transports, File, format, createLogger } = require("winston");
 const logConfiguration = {
-    transports: [
-        new winston.transports.Console()
-    ],
-    format: winston.format.combine(
-        winston.format.label({
-            label: `Label🏷️`
-        }),
-        winston.format.timestamp({
-           format: 'MMM-DD-YYYY HH:mm:ss'
-       }),
-        winston.format.printf(info => `${info.level}: ${info.label}: ${[info.timestamp]}: ${info.message}`),
-    )
+  transports: [
+    new transports.File({
+      filename: "logs/example.log",
+      format: format.combine(
+        format.timestamp({ format: "MMM-DD-YYYY HH:mm:ss" }),
+        format.align(),
+        format.printf(
+          (info) =>
+            `${info.level}: ${[info.timestamp]}: RequestData : ${info.message}`
+        )
+      ),
+    }),
+  ],
 };
-
-const logger = winston.createLogger(logConfiguration);
-module.exports=logger
+const logger = createLogger(logConfiguration);
+module.exports = logger;
