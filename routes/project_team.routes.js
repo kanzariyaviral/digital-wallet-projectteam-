@@ -6,5 +6,5 @@ router.post("/create",projectTeamController.projectTemeCreate)
 router.put("/add/resource",projectTeamController.resourceAddInProjectTeam)
 router.get("/",projectTeamController.getAllProjectTeam)
 router.post("/create-micro",projectTeamController.projectTemeCreateWithMicro)
-
+router.put("/add/resource-micro",projectTeamController.resourceAddInProjectTeamWithMicro)
 module.exports = router;

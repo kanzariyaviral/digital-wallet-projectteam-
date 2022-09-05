@@ -45,10 +45,6 @@ exports.resourceAddInProjectTeam = (req, res) => {
     .then((p) => {
       Resource.find({ _id: req.body.resourceId })
         .then((resource) => {
-          let newBoard = new Resource({
-            _id: req.body.projectTeamId,
-            resourceIds: req.body.resourceId,
-          });
           ProjectTeam.findOneAndUpdate(
             { _id: req.body.projectTeamId },
             { resourceIds: req.body.resourceId },
@@ -153,4 +149,41 @@ exports.projectTemeCreateWithMicro = async (req, res) => {
       message: "Resource Not Found",
     });
   }
+};
+exports.resourceAddInProjectTeamWithMicro = async (req, res) => {
+  ProjectTeam.findOne({ _id: req.body.projectTeamId })
+    .then(async (p) => {
+      const getResources = await resourceService.getResourcesFunc(req.body.resourceId);
+      if (getResources.success === true) {
+          ProjectTeam.findOneAndUpdate(
+            { _id: req.body.projectTeamId },
+            { resourceIds: req.body.resourceId },
+            function (err, docs) {
+              if (err) {
+                return res.json({
+                  success: false,
+                  message: err,
+                });
+              } else {
+                return res.json({
+                  success: true,
+                  message: "Project Team Update Sucessfully",
+                });
+              }
+            }
+          );
+        } else {
+          return res.status(402).json({
+            success: false,
+            message: "Resource Not Found",
+          });
+        }
+    })
+    .catch((err) => {
+      return res.status(202).json({
+        success: false,
+        data: {},
+        message: "project not found",
+      });
+    });
 };
