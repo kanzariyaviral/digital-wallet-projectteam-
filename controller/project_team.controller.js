@@ -119,7 +119,8 @@ exports.projectTemeCreateWithMicro = async (req, res) => {
   reqData.id=reqID;
   logger.info(`${JSON. stringify(reqData)}`);
   const getResources = await resourceService.getResourcesFunc(resourceIds[0],reqID);
-  if (getResources.success === true) {
+  if (getResources?.success === true) {
+    logger.info(`${JSON. stringify(getResources)}`);
     const fullName = `${getResources?.data?.firstName} ${getResources?.data?.lastName}`;
     const projectTeam = new ProjectTeam({
       _id: new mongoose.Types.ObjectId(),
@@ -137,17 +138,17 @@ exports.projectTemeCreateWithMicro = async (req, res) => {
         });
       })
       .catch((err) => {
-        logger.error(
-          `${err.status || 500} - ${res.statusMessage} - ${err.message} - ${
-            req.originalUrl
-          } - ${req.method} - ${req.ip}`
-        );
         return res.status(400).json({
           success: false,
           message: err,
         });
       });
   } else {
+    const error = {
+      id: reqID,
+      errorMessage: 'Resource Not Found',
+    };
+    logger.error(`${JSON.stringify(error)}`);
     return res.status(402).json({
       success: false,
       message: "Resource Not Found",
@@ -205,7 +206,7 @@ function uniqueID() {
 }
 function requestData(req){
   return{
-    "id":"",
+    "id":req?.body?.id||"",
     "url":req.originalUrl,
     "method":req.method,
     "body":req.body,

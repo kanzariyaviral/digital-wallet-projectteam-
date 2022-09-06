@@ -1,0 +1,14 @@
+info: Sep-05-2022 18:42:37: RequestData : 	{"id":"e6R3lwaRgPvd24rxdnhyKoOVy1662383557500000","url":"/project/create","method":"POST","body":{"projectTeamName":"logger test","resourceIds":["630da4803f5f4f1b96f99b2b"]}}
+info: Sep-05-2022 18:43:32: RequestData : 	{"id":"1jwGynh0mukQ6YOQZSNskIXql1662383612975000","url":"/project/create","method":"POST","body":{"projectTeamName":"logger test","resourceIds":["630da4803f5f4f1b96f99b2b"]}}
+info: Sep-05-2022 18:44:33: RequestData : 	{"id":"LqyNiL3l4m3JpqjncBts79yNY1662383673005000","url":"/project/create","method":"POST","body":{"projectTeamName":"logger test","resourceIds":["630da4803f5f4f1b96f99b2b"]}}
+info: Sep-05-2022 18:47:03: RequestData : 	{"id":"FjeL2BNwlKJVphOtVeaR0Hi6Q1662383823399000","url":"/project/create","method":"POST","body":{"projectTeamName":"logger test","resourceIds":["630da4803f5f4f1b96f99b2b"]}}
+info: Sep-05-2022 18:47:11: RequestData : 	{"id":"FjeL2BNwlKJVphOtVeaR0Hi6Q1662383823399000","url":"/project/create","method":"POST","body":{"projectTeamName":"logger test","resourceIds":["630da4803f5f4f1b96f99b2b"]}}
+info: Sep-05-2022 18:48:18: RequestData : 	{"id":"JS0jz9tOKSoi4gPQuclKdFrWV1662383898761000","url":"/project/create","method":"POST","body":{"projectTeamName":"logger test","resourceIds":["630da4803f5f4f1b96f99b2b"]}}
+info: Sep-05-2022 18:48:27: RequestData : 	{"success":true,"data":{"_id":"630da4803f5f4f1b96f99b2b","firstName":"suresh","lastName":"kanzariya","email":"sureshgtcsys@gmail.com","password":"admin@123","status":false,"hasUserChangedInitialPWD":false,"insertedAt":"2022-08-30T05:47:44.329Z","insertedBy":"kashyap patel","role":"user","__v":0}}
+info: Sep-06-2022 11:31:35: RequestData : 	{"id":"IanfRbRpLijVL56ReYvmyRlEc1662444095079000","url":"/project/create","method":"POST","body":{"projectTeamName":"logger test","resourceIds":["630da4443f5f4f1b96f99b"]}}
+info: Sep-06-2022 11:37:25: RequestData : 	{"id":"2JYAzZvwq9QUjebGucgBqJzCL1662444445410000","url":"/project/create","method":"POST","body":{"projectTeamName":"logger test","resourceIds":["630da4443f5f4f1b96f99b"]}}
+info: Sep-06-2022 11:38:36: RequestData : 	{"id":"2ZNuBUamGoDZcLTOnnk7xaF7H1662444516122000","url":"/project/create","method":"POST","body":{"projectTeamName":"logger test","resourceIds":["630da4443f5f4f1b96f99b"]}}
+info: Sep-06-2022 11:45:27: RequestData : 	{"id":"JxDYX28RFaKZVrbnbPakISJej1662444927934000","url":"/project/create","method":"POST","body":{"projectTeamName":"logger test","resourceIds":["630da4443f5f4f1b96f99b"]}}
+error: Sep-06-2022 11:45:27: RequestData : 	{"errorMessage":"Resource Not Found"}
+info: Sep-06-2022 11:46:41: RequestData : 	{"id":"wDA3CB9vzXkDiAY8i5RF3ESpN1662445001164000","url":"/project/create","method":"POST","body":{"projectTeamName":"logger test","resourceIds":["630da4443f5f4f1b96f99b"]}}
+error: Sep-06-2022 11:46:41: RequestData : 	{"id":"wDA3CB9vzXkDiAY8i5RF3ESpN1662445001164000","errorMessage":"Resource Not Found"}
