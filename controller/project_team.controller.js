@@ -116,11 +116,16 @@ exports.projectTemeCreateWithMicro = async (req, res) => {
   resourceIds = resourceIds.filter(onlyUnique);
   const reqID = uniqueID();
   let reqData=requestData(req)
-  reqData.id=reqID;
+  reqData.trackId=reqID;
   logger.info(`${JSON. stringify(reqData)}`);
-  const getResources = await resourceService.getResourcesFunc(resourceIds[0],reqID);
+  let getResources = await resourceService.getResourcesFunc(resourceIds[0],reqID);
+  let resourseLog={
+    trackId:reqID ||"",
+    success:getResources.success ||"",
+    data:getResources.data || ""
+  }
   if (getResources?.success === true) {
-    logger.info(`${JSON. stringify(getResources)}`);
+    logger.info(`${JSON. stringify(resourseLog)}`);
     const fullName = `${getResources?.data?.firstName} ${getResources?.data?.lastName}`;
     const projectTeam = new ProjectTeam({
       _id: new mongoose.Types.ObjectId(),
@@ -206,10 +211,10 @@ function uniqueID() {
 }
 function requestData(req){
   return{
-    "id":req?.body?.id||"",
-    "url":req.originalUrl,
-    "method":req.method,
-    "body":req.body,
+    "trackId":req?.body?.id||"",
+    "url":req.originalUrl ||"",
+    "method":req.method || "",
+    "body":req.body || "",
 
   }
 }

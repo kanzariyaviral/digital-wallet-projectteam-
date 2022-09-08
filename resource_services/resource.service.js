@@ -4,7 +4,7 @@ const RESOURCE_URL = process.env.RESOURCE_URL;
 const request = require("request");
 
 exports.getResourcesFunc = (resourceId,reqId) => {
-  const reqbody={"id":reqId}
+  const reqbody={"trackId":reqId}
     return new Promise(function (resolve, reject) {
        request.post(
         {

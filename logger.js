@@ -8,7 +8,7 @@ const logConfiguration = {
         format.align(),
         format.printf(
           (info) =>
-            `${info.level}: ${[info.timestamp]}: RequestData : ${info.message}`
+            `${info.level}: ${[info.timestamp]}: Data : ${info.message}`
         )
       ),
     }),
